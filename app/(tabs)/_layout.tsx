@@ -1,35 +1,75 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Ionicons } from '@expo/vector-icons'; 
+import HomeScreen from './index';
+import ListScreen from './list';
+import ProfileScreen from './about';
+import SettingsScreen from './settings';
+import DetailsScreen from '../details';
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+// Define your stack params here
+type RootStackParamList = {
+  Tabs: undefined;
+  Details: { item: { id: string; title: string; image: any; description: string } };
+};
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
+function Tabs() {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-    </Tabs>
+        tabBarStyle: {
+          backgroundColor: '#fff',
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          position: 'absolute',
+          height: 85,
+          paddingBottom: 10,
+          shadowColor: '#000',
+          shadowOpacity: 0.1,
+          shadowRadius: 6,
+          elevation: 5,
+        },
+        tabBarActiveTintColor: '#007AFF',
+        tabBarInactiveTintColor: '#999',
+        tabBarIcon: ({ color, size }) => {
+          let iconName: keyof typeof Ionicons.glyphMap = 'help-outline';
+
+          if (route.name === 'Explore') {
+            iconName = 'compass-outline';
+          } else if (route.name === 'Highlights') {
+            iconName = 'star-outline';
+          } else if (route.name === 'About') {
+            iconName = 'information-circle-outline';
+          } else if (route.name === 'Settings') {
+            iconName = 'settings-outline';
+          }
+
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+          marginBottom: 5,
+        },
+      })}
+    >
+      <Tab.Screen name="Explore" component={HomeScreen} />
+      <Tab.Screen name="Highlights" component={ListScreen} />
+      <Tab.Screen name="About" component={ProfileScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
+    </Tab.Navigator>
+  );
+}
+
+export default function Layout() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Tabs" component={Tabs} />
+      <Stack.Screen name="Details" component={DetailsScreen} />
+    </Stack.Navigator>
   );
 }
