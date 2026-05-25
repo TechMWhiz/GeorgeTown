@@ -1,16 +1,30 @@
+import React from 'react';
+import { View, Animated } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Ionicons } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons';
+import { FavoritesProvider } from '../../FavoritesContext';
+
+// Screens
 import HomeScreen from './index';
 import ListScreen from './list';
 import ProfileScreen from './about';
 import SettingsScreen from './settings';
 import DetailsScreen from '../details';
+import FavoritesScreen from './favorites';
 
-// Define your stack params here
-type RootStackParamList = {
+export type RootStackParamList = {
   Tabs: undefined;
-  Details: { item: { id: string; title: string; image: any; description: string } };
+  Details: {
+    item: {
+      id: string;
+      title: string;
+      image: any;
+      description: string;
+      category: string;
+      mapUrl: string;
+    };
+  };
 };
 
 const Tab = createBottomTabNavigator();
@@ -22,43 +36,67 @@ function Tabs() {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#fff',
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
+          backgroundColor: '#FDF6EC', // 👈 Colonial Cream background
+          borderRadius: 25,
           position: 'absolute',
-          height: 85,
-          paddingBottom: 10,
+          bottom: 20,
+          left: 25,
+          right: 25,
+          height: 65,
           shadowColor: '#000',
-          shadowOpacity: 0.1,
-          shadowRadius: 6,
-          elevation: 5,
+          shadowOpacity: 0.15,
+          shadowRadius: 8,
+          elevation: 8,
         },
-        tabBarActiveTintColor: '#007AFF',
-        tabBarInactiveTintColor: '#999',
-        tabBarIcon: ({ color, size }) => {
-          let iconName: keyof typeof Ionicons.glyphMap = 'help-outline';
+        tabBarShowLabel: false,
+        tabBarIcon: ({ focused }) => {
+          let iconName: keyof typeof Ionicons.glyphMap;
 
-          if (route.name === 'Explore') {
-            iconName = 'compass-outline';
+          if (route.name === 'Home') {
+            iconName = 'home-outline';
           } else if (route.name === 'Highlights') {
-            iconName = 'star-outline';
+            iconName = 'list-outline';
+          } else if (route.name === 'Favorites') {
+            iconName = 'heart-outline';
           } else if (route.name === 'About') {
-            iconName = 'information-circle-outline';
-          } else if (route.name === 'Settings') {
+            iconName = 'grid-outline';
+          } else {
             iconName = 'settings-outline';
           }
 
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '600',
-          marginBottom: 5,
+          // Smooth animation for active tab
+          const scaleAnim = new Animated.Value(focused ? 1.1 : 1);
+          Animated.spring(scaleAnim, {
+            toValue: focused ? 1.1 : 1,
+            friction: 5,
+            useNativeDriver: true,
+          }).start();
+
+          return (
+            <Animated.View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                transform: [{ scale: scaleAnim }],
+                backgroundColor: focused ? '#00A49B' : 'transparent', // 👈 Persian Green pill
+                paddingHorizontal: focused ? 12 : 0,
+                paddingVertical: focused ? 8 : 0,
+                borderRadius: 20,
+              }}
+            >
+              <Ionicons
+                name={iconName}
+                size={24}
+                color={focused ? '#fff' : '#1E3D59'} // 👈 Active white, inactive Straits Blue
+              />
+            </Animated.View>
+          );
         },
       })}
     >
-      <Tab.Screen name="Explore" component={HomeScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Highlights" component={ListScreen} />
+      <Tab.Screen name="Favorites" component={FavoritesScreen} />
       <Tab.Screen name="About" component={ProfileScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
@@ -67,9 +105,11 @@ function Tabs() {
 
 export default function Layout() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Tabs" component={Tabs} />
-      <Stack.Screen name="Details" component={DetailsScreen} />
-    </Stack.Navigator>
+    <FavoritesProvider>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Tabs" component={Tabs} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+      </Stack.Navigator>
+    </FavoritesProvider>
   );
 }
