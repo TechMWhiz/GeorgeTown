@@ -17,6 +17,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useFavorites } from '../FavoritesContext';
+import { useTheme } from './ThemeContext';  
+import { lightTheme, darkTheme } from './themeColors'; 
 import type { RootStackParamList } from './types';
 
 const { width, height } = Dimensions.get('window');
@@ -28,15 +30,16 @@ export default function DetailsScreen({ route }: { route: DetailsRouteProp }) {
   const { item } = route.params;
   const navigation = useNavigation<NavigationProp>();
   const { favorites, toggleFavorite } = useFavorites();
+  const { theme } = useTheme();
+  const colors = theme === 'dark' ? darkTheme : lightTheme;
 
   const isFavorite = favorites.find(f => f.id === item.id);
 
-  // State for fullscreen viewer
   const [viewerVisible, setViewerVisible] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <ImageBackground source={item.image} style={styles.image} resizeMode="cover">
         {/* Top buttons */}
         <View style={styles.topButtons}>
@@ -48,26 +51,27 @@ export default function DetailsScreen({ route }: { route: DetailsRouteProp }) {
             <Ionicons
               name={isFavorite ? 'heart' : 'heart-outline'}
               size={26}
-              color={isFavorite ? '#EB3349' : '#fff'}
+              color={isFavorite ? colors.danger : '#fff'}
             />
           </TouchableOpacity>
         </View>
 
-        {/* Gradient overlay */}
-        <LinearGradient colors={['transparent', 'rgba(0,0,0,0.75)']} style={styles.overlay} />
+        <LinearGradient
+          colors={['transparent', theme === 'dark' ? 'rgba(0,0,0,0.85)' : 'rgba(0,0,0,0.75)']}
+          style={styles.overlay}
+        />
       </ImageBackground>
 
-      {/* Fixed half‑screen info card */}
-      <View style={styles.infoCard}>
-        <View style={styles.handleBar} />
+      <View style={[styles.infoCard, { backgroundColor: colors.card }]}>
+        <View style={[styles.handleBar, { backgroundColor: colors.divider }]} />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.category}>{item.category}</Text>
-          <Text style={styles.description}>{item.description}</Text>
+          <Text style={[styles.title, { color: colors.text }]}>{item.title}</Text>
+          <Text style={[styles.category, { color: colors.accent }]}>{item.category}</Text>
+          <Text style={[styles.description, { color: colors.subText }]}>{item.description}</Text>
 
           {/* Map button */}
           <TouchableOpacity
-            style={styles.mapButton}
+            style={[styles.mapButton, { backgroundColor: colors.accent }]}
             onPress={async () => {
               const url = item.mapUrl;
               const supported = await Linking.canOpenURL(url);
@@ -84,7 +88,7 @@ export default function DetailsScreen({ route }: { route: DetailsRouteProp }) {
           {/* Gallery */}
           {item.gallery && (
             <>
-              <Text style={styles.galleryTitle}>Photos</Text>
+              <Text style={[styles.galleryTitle, { color: colors.text }]}>Photos</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {item.gallery.map((photo: any, index: number) => (
                   <TouchableOpacity
@@ -103,7 +107,7 @@ export default function DetailsScreen({ route }: { route: DetailsRouteProp }) {
 
           {/* Book Now button */}
           <TouchableOpacity
-            style={styles.bookButton}
+            style={[styles.bookButton, { backgroundColor: colors.danger }]}
             onPress={() => navigation.navigate('BookingForm', { item })}
           >
             <Text style={styles.bookButtonText}>Book Now</Text>
@@ -135,7 +139,7 @@ export default function DetailsScreen({ route }: { route: DetailsRouteProp }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#000' },
+  container: { flex: 1 },
   image: { flex: 1 },
   topButtons: {
     position: 'absolute',
@@ -157,32 +161,18 @@ const styles = StyleSheet.create({
     top: height * 0.65,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(255,255,255,0.95)',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     padding: 25,
-    height: height * 0.45, // fixed half screen
+    height: height * 0.45,
   },
-  handleBar: {
-    width: 60,
-    height: 6,
-    backgroundColor: '#ccc',
-    borderRadius: 3,
-    alignSelf: 'center',
-    marginBottom: 10,
-  },
-  title: { fontSize: 24, fontWeight: '700', color: '#1E3D59', marginBottom: 6 },
-  category: { fontSize: 16, fontWeight: '600', color: '#00A49B', marginBottom: 10 },
-  description: { fontSize: 15, color: '#576e85', lineHeight: 22, marginBottom: 20 },
-  mapButton: {
-    backgroundColor: '#00A49B',
-    paddingVertical: 12,
-    borderRadius: 30,
-    alignItems: 'center',
-    marginBottom: 20,
-  },
+  handleBar: { width: 60, height: 6, borderRadius: 3, alignSelf: 'center', marginBottom: 10 },
+  title: { fontSize: 24, fontWeight: '700', marginBottom: 6 },
+  category: { fontSize: 16, fontWeight: '600', marginBottom: 10 },
+  description: { fontSize: 15, lineHeight: 22, marginBottom: 20 },
+  mapButton: { paddingVertical: 12, borderRadius: 30, alignItems: 'center', marginBottom: 20 },
   mapButtonText: { color: '#fff', fontWeight: '700', fontSize: 16 },
-  galleryTitle: { fontSize: 18, fontWeight: '600', color: '#1E3D59', marginBottom: 10 },
+  galleryTitle: { fontSize: 18, fontWeight: '600', marginBottom: 10 },
   galleryImage: { width: 120, height: 80, borderRadius: 10, marginRight: 10 },
   bookButton: {
     backgroundColor: '#EB3349',

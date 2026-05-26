@@ -4,13 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 import { useFavorites } from '../../FavoritesContext';
+import { useTheme } from '../ThemeContext';   // ✅ added
+import { lightTheme, darkTheme } from '../themeColors'; // ✅ added
 
 export type RootStackParamList = {
   Home: undefined;
   Details: { item: { id: string; title: string; image: any; description: string } };
   Favorites: undefined;
 };
-
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Details'>;
 
@@ -180,14 +181,15 @@ export default function ListScreen() {
   const navigation = useNavigation<NavigationProp>();
   const [filter, setFilter] = useState('All');
   const { favorites, toggleFavorite } = useFavorites();
+  const { theme } = useTheme();   
+  const colors = theme === 'dark' ? darkTheme : lightTheme;
 
   const filteredData = filter === 'All' ? data : data.filter(item => item.category === filter);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Highlights</Text>
-      <View style={styles.divider} />
-
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.title, { color: colors.text }]}>Highlights</Text>
+      <View style={[styles.divider, { backgroundColor: colors.divider }]} />
 
       {/* Filter buttons */}
       <View style={styles.filterBar}>
@@ -195,9 +197,19 @@ export default function ListScreen() {
           <TouchableOpacity
             key={cat}
             onPress={() => setFilter(cat)}
-            style={[styles.filterButton, filter === cat && styles.activeFilter]}
+            style={[
+              styles.filterButton,
+              { backgroundColor: filter === cat ? colors.accent : colors.card }
+            ]}
           >
-            <Text style={[styles.filterText, filter === cat && styles.activeFilterText]}>{cat}</Text>
+            <Text
+              style={[
+                styles.filterText,
+                { color: filter === cat ? '#fff' : colors.text }
+              ]}
+            >
+              {cat}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -207,8 +219,8 @@ export default function ListScreen() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={styles.item}
-            onPress={() => navigation.navigate('Details', { item })} 
+            style={[styles.item, { backgroundColor: colors.card }]}
+            onPress={() => navigation.navigate('Details', { item })}
           >
             <Image source={item.image} style={styles.image} />
 
@@ -219,11 +231,11 @@ export default function ListScreen() {
               <Ionicons
                 name={favorites.find(f => f.id === item.id) ? 'heart' : 'heart-outline'}
                 size={22}
-                color={favorites.find(f => f.id === item.id) ? '#EB3349' : '#1E3D59'}
+                color={favorites.find(f => f.id === item.id) ? colors.danger : colors.text}
               />
             </TouchableOpacity>
 
-            <Text style={styles.text}>{item.title}</Text>
+            <Text style={[styles.text, { color: colors.text }]}>{item.title}</Text>
           </TouchableOpacity>
         )}
       />
@@ -232,50 +244,22 @@ export default function ListScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FDF6EC', paddingHorizontal: 16 }, 
+  container: { flex: 1, paddingHorizontal: 16 },
   title: {
     fontSize: 22,
     fontWeight: '700',
     marginTop: 50,
     marginBottom: 10,
-    color: '#1E3D59', // Straits Blue
     textAlign: 'left',
   },
-  divider: {
-    height: 2,                
-    backgroundColor: '#576e85', 
-    marginBottom: 15,         
-    borderRadius: 1,          
-  },
-  
-  filterBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 15,
-  },
-  filterButton: {
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    backgroundColor: '#E0E0E0', 
-  },
-  activeFilter: {
-    backgroundColor: '#00A49B', 
-  },
-  filterText: {
-    fontSize: 14,
-    color: '#1E3D59', 
-    fontWeight: '500',
-  },
-  activeFilterText: {
-    color: '#fff',
-    fontWeight: '700',
-  },
+  divider: { height: 2, marginBottom: 15, borderRadius: 1 },
+  filterBar: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 15 },
+  filterButton: { paddingVertical: 6, paddingHorizontal: 12, borderRadius: 20 },
+  filterText: { fontSize: 14, fontWeight: '500' },
   item: {
     flexDirection: 'row',
     padding: 10,
     alignItems: 'center',
-    backgroundColor: '#fff',
     marginBottom: 10,
     borderRadius: 8,
     position: 'relative',
@@ -285,22 +269,14 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   image: { width: 60, height: 60, marginRight: 10, borderRadius: 6 },
-  text: { fontSize: 18, color: '#1E3D59' }, 
-  heartIcon: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-  },
+  text: { fontSize: 18 },
+  heartIcon: { position: 'absolute', top: 8, right: 8 },
   favoritesButton: {
-    backgroundColor: '#00A49B', 
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
     alignSelf: 'center',
     marginBottom: 20,
   },
-  favoritesButtonText: {
-    color: '#fff',
-    fontWeight: '600',
-  },
+  favoritesButtonText: { fontWeight: '600' },
 });

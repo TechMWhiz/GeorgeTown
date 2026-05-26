@@ -3,16 +3,20 @@ import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image } from
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTheme } from '../ThemeContext';
+import { lightTheme, darkTheme } from '../themeColors';
 
 type RootStackParamList = {
   Home: undefined;
-  Details: { item?: { id: string; title: string; image: any; description: string; mapUrl: string  } };
+  Details: { item?: { id: string; title: string; image: any; description: string; mapUrl: string } };
 };
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
+  const { theme } = useTheme();
+  const colors = theme === 'dark' ? darkTheme : lightTheme;
 
   return (
     <ImageBackground
@@ -20,24 +24,17 @@ export default function HomeScreen() {
       style={styles.background}
       resizeMode="cover"
     >
-      {/* Top bar */}
-      <View style={styles.topBar}>
-        <Image
-          source={require('../../assets/images/profile.jpg')} 
-          style={styles.profilePic}
-        />
-      </View>
 
       <LinearGradient
-        colors={['transparent', 'rgba(253,246,236,0.95)']} 
+        colors={['transparent', theme === 'dark' ? 'rgba(18,18,18,0.95)' : 'rgba(253,246,236,0.95)']}
         style={styles.overlay}
       >
         <View style={styles.content}>
-          <Text style={styles.title}>Explore George Town</Text>
-          <Text style={styles.subtitle}>Heritage • Food • Street Art</Text>
+          <Text style={[styles.title, { color: colors.text }]}>Explore George Town</Text>
+          <Text style={[styles.subtitle, { color: colors.subText }]}>Heritage • Food • Street Art</Text>
 
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, { backgroundColor: colors.accent }]}
             onPress={() =>
               navigation.navigate('Details', {
                 item: {
@@ -79,7 +76,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
     borderWidth: 2,
-    borderColor: '#00A49B', 
   },
   overlay: {
     flex: 1,
@@ -93,18 +89,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#1E3D59', 
     marginBottom: 10,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
-    color: '#576e85', 
     marginBottom: 20,
     textAlign: 'center',
   },
   button: {
-    backgroundColor: '#00A49B', 
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 25,
@@ -115,7 +108,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonText: {
-    color: '#fff', 
+    color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },

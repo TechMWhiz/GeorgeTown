@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, Switch, TouchableOpacity, Linking, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -6,13 +6,14 @@ import type { RootStackParamList } from './_layout';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useProfile } from '../ProfileContext';
+import { useTheme } from '../ThemeContext';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Settings'>;
 
 export default function SettingsScreen() {
-  const [isEnabled, setIsEnabled] = useState(false);
   const navigation = useNavigation<NavigationProp>();
   const { profile, updateProfile } = useProfile();
+  const { theme, toggleTheme } = useTheme();
 
   // 📸 Pick image from gallery or camera
   const pickImage = async (fromCamera: boolean = false) => {
@@ -36,14 +37,14 @@ export default function SettingsScreen() {
     if (!result.canceled) {
       updateProfile({
         ...profile,
-        image: { uri: result.assets[0].uri }, // ✅ update context
+        image: { uri: result.assets[0].uri },
       });
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Settings</Text>
+    <View style={[styles.container, theme === 'dark' && styles.darkContainer]}>
+      <Text style={[styles.title, theme === 'dark' && styles.darkText]}>Settings</Text>
       <View style={styles.divider} />
 
       {/* Profile Header */}
@@ -57,8 +58,8 @@ export default function SettingsScreen() {
             </TouchableOpacity>
           </View>
           <View style={styles.profileInfo}>
-            <Text style={styles.name}>{profile.name}</Text>
-            <Text style={styles.username}>{profile.username}</Text>
+            <Text style={[styles.name, theme === 'dark' && styles.darkText]}>{profile.name}</Text>
+            <Text style={[styles.username, theme === 'dark' && styles.darkSubText]}>{profile.username}</Text>
           </View>
         </View>
 
@@ -74,29 +75,29 @@ export default function SettingsScreen() {
 
       {/* Dark Mode toggle */}
       <View style={styles.row}>
-        <Text style={styles.text}>Dark Mode</Text>
-        <Switch value={isEnabled} onValueChange={() => setIsEnabled(!isEnabled)} />
+        <Text style={[styles.text, theme === 'dark' && styles.darkText]}>Dark Mode</Text>
+        <Switch value={theme === 'dark'} onValueChange={toggleTheme} />
       </View>
 
       {/* Other settings rows */}
       <TouchableOpacity style={styles.row} onPress={() => navigation.navigate('BookingHistory')}>
-        <Text style={styles.text}>Booking History</Text>
-        <Text style={styles.chevron}>›</Text>
+        <Text style={[styles.text, theme === 'dark' && styles.darkText]}>Booking History</Text>
+        <Text style={[styles.chevron, theme === 'dark' && styles.darkText]}>›</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.row} onPress={() => navigation.navigate('About')}>
-        <Text style={styles.text}>About This App</Text>
-        <Text style={styles.chevron}>›</Text>
+        <Text style={[styles.text, theme === 'dark' && styles.darkText]}>About This App</Text>
+        <Text style={[styles.chevron, theme === 'dark' && styles.darkText]}>›</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.row} onPress={() => Linking.openURL('https://yourdomain.com/privacy')}>
-        <Text style={styles.text}>Privacy Policy</Text>
-        <Text style={styles.chevron}>›</Text>
+        <Text style={[styles.text, theme === 'dark' && styles.darkText]}>Privacy Policy</Text>
+        <Text style={[styles.chevron, theme === 'dark' && styles.darkText]}>›</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.row} onPress={() => Linking.openURL('mailto:yourappsupport@email.com')}>
-        <Text style={styles.text}>Contact / Feedback</Text>
-        <Text style={styles.chevron}>›</Text>
+        <Text style={[styles.text, theme === 'dark' && styles.darkText]}>Contact / Feedback</Text>
+        <Text style={[styles.chevron, theme === 'dark' && styles.darkText]}>›</Text>
       </TouchableOpacity>
     </View>
   );
@@ -104,7 +105,10 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FDF6EC', padding: 20, paddingTop: 60 },
+  darkContainer: { backgroundColor: '#121212' },
   title: { fontSize: 22, fontWeight: 'bold', marginBottom: 20, color: '#1E3D59' },
+  darkText: { color: '#fff' },
+  darkSubText: { color: '#aaa' },
   divider: { height: 2, backgroundColor: '#576e85', marginBottom: 10, borderRadius: 1 },
   profileHeader: { alignItems: 'center', marginBottom: 25 },
   profileRow: { flexDirection: 'row', alignItems: 'center' },

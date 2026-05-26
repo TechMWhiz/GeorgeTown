@@ -1,14 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { useTheme } from '../ThemeContext';
+import { lightTheme, darkTheme } from '../themeColors';
 
 export default function AboutScreen() {
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>About</Text>
-      <View style={styles.divider} />
+  const { theme } = useTheme();
+  const colors = theme === 'dark' ? darkTheme : lightTheme;
 
-      <Text style={styles.title}>About This App</Text>
-      <Text style={styles.text}>
+  return (
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.header, { color: colors.text }]}>About</Text>
+      <View style={[styles.divider, { backgroundColor: colors.divider }]} />
+
+      <Text style={[styles.title, { color: colors.accent }]}>About This App</Text>
+      <Text style={[styles.text, { color: colors.subText }]}>
         George Town Explorer was created to highlight Penang’s heritage, food, and street art.
         It’s a cultural guide designed for students and visitors to appreciate the city’s living heritage.
       </Text>
@@ -17,32 +22,28 @@ export default function AboutScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FDF6EC', padding: 20 },
+  container: { flex: 1, padding: 20 },
   header: {
     fontSize: 22,
     fontWeight: 'bold',
     marginTop: 30,
     marginBottom: 10,
     textAlign: 'left',
-    color: '#1E3D59',
   },
   title: { 
     fontSize: 22, 
     fontWeight: 'bold', 
     marginBottom: 10, 
     textAlign: 'center', 
-    marginTop: 20, 
-    color: '#00A49B'
+    marginTop: 20,
   },
   divider: {
-    height: 2,                
-    backgroundColor: '#576e85', 
-    marginBottom: 10,         
-    borderRadius: 1,          
+    height: 2,
+    marginBottom: 10,
+    borderRadius: 1,
   },
   text: { 
     fontSize: 16, 
-    textAlign: 'center', 
-    color: '#576e85'
+    textAlign: 'center',
   },
 });
