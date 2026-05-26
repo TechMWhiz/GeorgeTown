@@ -121,7 +121,6 @@ const data = [
     category: 'Food',
     mapUrl: 'https://maps.app.goo.gl/ngAzoQajXAqod2HW7',
     gallery: [
-      require('@/assets/images/kandar_.jpg'),
       require('@/assets/images/kandar.jpg'),
     ],
   },
