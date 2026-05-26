@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 type RootStackParamList = {
   Home: undefined;
-  Details: { item?: { id: string; title: string; image: any; description: string; mapUrl: string } };
+  Details: { item?: { id: string; title: string; image: any; description: string; mapUrl: string  } };
 };
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;

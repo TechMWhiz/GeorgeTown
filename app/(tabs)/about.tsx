@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 
-export default function ProfileScreen() {
+export default function AboutScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>About</Text>
@@ -17,14 +17,14 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FDF6EC', padding: 20 }, // Colonial Cream
+  container: { flex: 1, backgroundColor: '#FDF6EC', padding: 20 },
   header: {
     fontSize: 22,
     fontWeight: 'bold',
     marginTop: 30,
     marginBottom: 10,
     textAlign: 'left',
-    color: '#1E3D59', // Straits Blue
+    color: '#1E3D59',
   },
   title: { 
     fontSize: 22, 
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     marginBottom: 10, 
     textAlign: 'center', 
     marginTop: 20, 
-    color: '#00A49B' // Persian Green
+    color: '#00A49B'
   },
   divider: {
     height: 2,                
@@ -43,6 +43,6 @@ const styles = StyleSheet.create({
   text: { 
     fontSize: 16, 
     textAlign: 'center', 
-    color: '#576e85' // muted blue-gray
+    color: '#576e85'
   },
 });

@@ -1,17 +1,24 @@
 import React from 'react';
-import { View, Animated } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
+import { Animated } from 'react-native';
+
 import { FavoritesProvider } from '../../FavoritesContext';
+import { BookingsProvider } from '../BookingsContext'; 
+import { ProfileProvider } from '../ProfileContext';
 
 // Screens
 import HomeScreen from './index';
 import ListScreen from './list';
-import ProfileScreen from './about';
+import AboutScreen from './about';
 import SettingsScreen from './settings';
 import DetailsScreen from '../details';
 import FavoritesScreen from './favorites';
+import BookingForm from '../BookingForm';
+import BookingHistoryScreen from '../BookingHistoryScreen';
+import ProfileScreen from './profile';
+import EditProfileScreen from './EditProfileScreen';
 
 export type RootStackParamList = {
   Tabs: undefined;
@@ -23,8 +30,25 @@ export type RootStackParamList = {
       description: string;
       category: string;
       mapUrl: string;
+      gallery?: any[];
     };
   };
+  About: undefined;
+  Settings: undefined;
+  Profile: undefined;
+  EditProfile: undefined;
+  BookingForm: {
+    item: {
+      id: string;
+      title: string;
+      image: any;
+      description: string;
+      category: string;
+      mapUrl: string;
+      gallery?: any[];
+    };
+  };
+  BookingHistory: undefined;
 };
 
 const Tab = createBottomTabNavigator();
@@ -36,7 +60,7 @@ function Tabs() {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#FDF6EC', // 👈 Colonial Cream background
+          backgroundColor: '#FDF6EC',
           borderRadius: 25,
           position: 'absolute',
           bottom: 20,
@@ -64,7 +88,6 @@ function Tabs() {
             iconName = 'settings-outline';
           }
 
-          // Smooth animation for active tab
           const scaleAnim = new Animated.Value(focused ? 1.1 : 1);
           Animated.spring(scaleAnim, {
             toValue: focused ? 1.1 : 1,
@@ -78,7 +101,7 @@ function Tabs() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 transform: [{ scale: scaleAnim }],
-                backgroundColor: focused ? '#00A49B' : 'transparent', // 👈 Persian Green pill
+                backgroundColor: focused ? '#00A49B' : 'transparent',
                 paddingHorizontal: focused ? 12 : 0,
                 paddingVertical: focused ? 8 : 0,
                 borderRadius: 20,
@@ -87,7 +110,7 @@ function Tabs() {
               <Ionicons
                 name={iconName}
                 size={24}
-                color={focused ? '#fff' : '#1E3D59'} // 👈 Active white, inactive Straits Blue
+                color={focused ? '#fff' : '#1E3D59'}
               />
             </Animated.View>
           );
@@ -97,7 +120,6 @@ function Tabs() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Highlights" component={ListScreen} />
       <Tab.Screen name="Favorites" component={FavoritesScreen} />
-      <Tab.Screen name="About" component={ProfileScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );
@@ -106,10 +128,20 @@ function Tabs() {
 export default function Layout() {
   return (
     <FavoritesProvider>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Tabs" component={Tabs} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
-      </Stack.Navigator>
+      <BookingsProvider> 
+        <ProfileProvider>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Tabs" component={Tabs} />
+            <Stack.Screen name="Details" component={DetailsScreen} />
+            <Stack.Screen name="About" component={AboutScreen} />
+            <Stack.Screen name="Settings" component={SettingsScreen} />
+            <Stack.Screen name="BookingForm" component={BookingForm} />
+            <Stack.Screen name="BookingHistory" component={BookingHistoryScreen} />
+            <Stack.Screen name="Profile" component={ProfileScreen} />
+            <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+          </Stack.Navigator>
+        </ProfileProvider>
+      </BookingsProvider>
     </FavoritesProvider>
   );
 }

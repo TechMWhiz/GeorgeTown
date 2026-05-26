@@ -22,6 +22,14 @@ const data = [
     description: 'Step into Penang’s grandest clanhouse, where intricate carvings and golden beams tell stories of heritage and power. A hidden gem in Cannon Square waiting to amaze you.',
     category: 'Destination',
     mapUrl: 'https://maps.app.goo.gl/NcQjYTqRL8vVeHWL9',
+    gallery: [
+      require('@/assets/images/Kongsi.jpg'),
+      require('@/assets/images/Kongsi1.jpg'),
+      require('@/assets/images/Kongsi2.jpg'),
+      require('@/assets/images/Kongsi3.jpg'),
+      require('@/assets/images/Kongsi4.jpg'),
+
+    ],
   },
   {
     id: '2',
@@ -30,6 +38,13 @@ const data = [
     description: 'Marvel at the indigo walls of this legendary mansion. A blend of East and West architecture that feels like stepping into a living movie set.',
     category: 'Destination',
     mapUrl: 'https://maps.app.goo.gl/Udyv17v3egPERaZr8',
+    gallery: [
+      require('@/assets/images/FattTze1.jpg'),
+      require('@/assets/images/FattTze2.jpg'),
+      require('@/assets/images/FattTze3.jpg'),
+      require('@/assets/images/FattTze4.jpg'),
+      require('@/assets/images/FattTze5.jpg'),
+    ]
   },
   {
     id: '3',
@@ -38,14 +53,25 @@ const data = [
     description: 'Wander through UNESCO-listed streets filled with colonial charm, vibrant shops, and cultural treasures at every corner.',
     category: 'Destination',
     mapUrl: 'https://maps.app.goo.gl/4AZjFLHemCMuj8pc6',
+    gallery: [
+      require('@/assets/images/Streets.jpg'),
+      require('@/assets/images/Streets1.jpg'),
+      ]
   },
   {
     id: '4',
     title: 'Penang Hill',
     image: require('@/assets/images/dpenang-hill.jpg'),
-    description: 'Ride the funicular up to breathtaking views of George Town. A cool escape with gardens, temples, and panoramic scenery.',
+    description: 'Penang Hill is also called Penang Hill. The summit is about 821 meters above sea level. The climate is cool and pleasant, and it is a cool summer resort. Standing on the top of the mountain, you can see the whole island, not only Penang, but also the green Malay Peninsula in the distance. When the weather is good, you can take the famous cable car on Penang for a trip up the mountain. The endless blue sea and the lush Malay Peninsula are extremely harmonious in color and beautiful. Only here can you experience the true charm of "Oriental Pearls". After dark, the lights of Penang and the ship are as bright as jewels, which is even more enjoyable and unforgettable.',
     category: 'Destination',
     mapUrl: 'https://maps.app.goo.gl/CaV2UVDB39aMQw6w6',
+    gallery: [
+      require('@/assets/images/penanghill.jpg'),
+      require('@/assets/images/penanghill1.jpg'),
+      require('@/assets/images/penanghill4.jpg'),
+      require('@/assets/images/penanghill3.jpg'),
+      require('@/assets/images/penanghill2.jpg'),
+    ],
   },
   {
     id: '5',
@@ -54,6 +80,12 @@ const data = [
     description: 'Be enchanted by thousands of butterflies fluttering around you. A magical nature park that delights kids and adults alike.',
     category: 'Destination',
     mapUrl: 'https://maps.app.goo.gl/KrBALHjEnJr5ayAJA',
+    gallery: [
+      require('@/assets/images/Entopia1.jpg'),
+      require('@/assets/images/Entopia2.jpg'),
+      require('@/assets/images/Entopia3.jpg'),
+      require('@/assets/images/Entopia4.jpg'),
+    ],
   },
   {
     id: '6',
@@ -62,7 +94,11 @@ const data = [
     description: 'Savor smoky stir-fried noodles bursting with flavor. A street food legend that every visitor must taste.',
     category: 'Food',
     mapUrl: 'https://maps.app.goo.gl/MTuZXXVEWuWgwAZg7',
+    gallery: [
+      require('@/assets/images/Char-Kway-Teow.jpg'),
+    ],
   },
+
   {
     id: '7',
     title: 'Penang Cendol',
@@ -70,6 +106,11 @@ const data = [
     description: 'Cool down with shaved ice, coconut milk, and palm sugar. A sweet treat that refreshes you under Penang’s tropical sun.',
     category: 'Food',
     mapUrl: 'https://maps.app.goo.gl/cSZUMdsj46v8rffL6',
+    gallery: [
+      require('@/assets/images/cendol1.jpg'),
+      require('@/assets/images/cendol2.jpg'),
+      require ('@/assets/images/cendol3.jpg'),
+    ],
   },
   {
     id: '8',
@@ -78,6 +119,10 @@ const data = [
     description: 'Indulge in rice drenched with rich curries. A hearty meal that captures Penang’s Indian Muslim culinary heritage.',
     category: 'Food',
     mapUrl: 'https://maps.app.goo.gl/ngAzoQajXAqod2HW7',
+    gallery: [
+      require('@/assets/images/kandar.jpeg'),
+      require('@/assets/images/kandar.jpg'),
+    ],
   },
   {
     id: '9',
