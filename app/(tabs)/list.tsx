@@ -19,7 +19,7 @@ const data = [
   {
     id: '1',
     title: 'Khoo Kongsi Temple',
-    image: require('@/assets/images/khoo_kongsi.png'),
+    image: require('@/assets/images/khoo_kongsi.jpg'),
     description: 'Step into Penang’s grandest clanhouse, where intricate carvings and golden beams tell stories of heritage and power. A hidden gem in Cannon Square waiting to amaze you.',
     category: 'Destination',
     mapUrl: 'https://maps.app.goo.gl/NcQjYTqRL8vVeHWL9',
@@ -91,7 +91,7 @@ const data = [
   {
     id: '6',
     title: 'Char Kway Teow',
-    image: require('@/assets/images/fchar_kway_teow.png'),
+    image: require('@/assets/images/fchar_kway_teow.jpg'),
     description: 'Savor smoky stir-fried noodles bursting with flavor. A street food legend that every visitor must taste.',
     category: 'Food',
     mapUrl: 'https://maps.app.goo.gl/MTuZXXVEWuWgwAZg7',

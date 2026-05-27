@@ -40,7 +40,7 @@ export default function HomeScreen() {
                 item: {
                   id: '1',
                   title: 'Khoo Kongsi Temple',
-                  image: require('../../assets/images/khoo_kongsi.png'),
+                  image: require('../../assets/images/khoo_kongsi.jpg'),
                   mapUrl: 'https://maps.app.goo.gl/HaA6bF8LLUqJr1rb6',
                   description:
                     'Khoo Kongsi Temple, also known as Leong San Tong, is the grandest Hokkien clanhouse in Malaysia. Built in 1906, it features intricate carvings, gilded beams, and a magnificent ancestral hall that reflects the wealth and influence of the Khoo clan. Hidden within Cannon Square, this UNESCO World Heritage Site offers visitors a glimpse into Penang’s Chinese heritage, complete with a traditional opera stage and granite-paved courtyard.',

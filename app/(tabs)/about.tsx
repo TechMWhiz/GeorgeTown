@@ -24,7 +24,7 @@ export default function AboutScreen() {
     require('@/assets/images/fnasi.jpg'),
     require('@/assets/images/kandar.jpg'),
     require('@/assets/images/fCendol.jpg'),
-    require('@/assets/images/khoo_kongsi.png'),
+    require('@/assets/images/khoo_kongsi.jpg'),
     require('@/assets/images/art_lane.jpg'),
     require('@/assets/images/aSwing.jpg'),
     require('@/assets/images/aMotorcycle.jpg'),
